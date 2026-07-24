@@ -2,54 +2,313 @@
   padding: 24px;
 }
 
+
 .dashboard-container h2 {
   margin-bottom: 20px;
 }
 
+
+/* =========================
+   STAT CARDS
+========================= */
+
 .stats-cards {
+
   display: grid;
+
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
   gap: 16px;
+
   margin-bottom: 24px;
+
 }
+
+
 
 .stat-value {
+
   font-size: 1.5rem;
-  font-weight: 600;
+
+  font-weight: 700;
+
   margin: 0;
+
 }
+
+
+
+
+
+/* =========================
+   STAT CARDS DESIGN
+========================= */
+
+
+.accent-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  background: var(--card) !important;
+
+  border-radius: 18px !important;
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 6px 20px rgba(31,41,55,.06) !important;
+
+  padding: 4px;
+
+}
+
+
+
+/* barre gauche arrondie */
+
+.accent-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  top: 16px;
+
+  bottom: 16px;
+
+  width: 5px;
+
+  background: var(--primary);
+
+  border-radius: 0 10px 10px 0;
+
+}
+
+
+
+/* revenus */
+
+.accent-card.income::before {
+
+  background: var(--success);
+
+}
+
+
+
+/* dépenses */
+
+.accent-card.expense::before {
+
+  background: var(--danger);
+
+}
+
+
+
+
+
+.accent-card .mat-mdc-card-header {
+
+  padding: 14px 18px 0 !important;
+
+}
+
+
+
+.accent-card .mat-mdc-card-content {
+
+  padding: 6px 18px 18px !important;
+
+}
+
+
+
+.accent-card .mat-mdc-card-title {
+
+  font-family: var(--font-body) !important;
+
+  font-weight: 600 !important;
+
+  font-size: .85rem !important;
+
+  color: var(--muted) !important;
+
+  text-transform: uppercase;
+
+  letter-spacing: .04em;
+
+}
+
+
+
+
+
+/* =========================
+   CHARTS
+========================= */
+
 
 .charts-row {
+
   display: grid;
+
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
   gap: 16px;
+
 }
+
+
 
 .chart-card canvas {
+
+  width: 100% !important;
+
   max-height: 300px;
-}
-.mat-mdc-card {
-  background: var(--card) !important;
-  border-radius: 16px !important;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 16px rgba(31, 41, 55, 0.05) !important;
-  padding: 4px;
+
 }
 
-.mat-mdc-card-header {
-  padding: 16px 20px 0 !important;
+
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+
+@media(max-width:600px){
+
+
+  .dashboard-container {
+
+    padding: 16px;
+
+  }
+
+
+
+  .dashboard-container h2 {
+
+    font-size: 1.4rem;
+
+    margin-bottom: 16px;
+
+  }
+
+
+
+  /* cartes statistiques uniquement */
+
+  .stats-cards {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+  }
+
+
+
+  .accent-card {
+
+    border-radius: 14px !important;
+
+    padding: 2px;
+
+  }
+
+
+
+  .accent-card::before {
+
+    width: 4px;
+
+    top: 12px;
+
+    bottom: 12px;
+
+  }
+
+
+
+  .accent-card .mat-mdc-card-header {
+
+    padding: 10px 14px 0 !important;
+
+  }
+
+
+
+  .accent-card .mat-mdc-card-content {
+
+    padding: 6px 14px 14px !important;
+
+  }
+
+
+
+  .stat-value {
+
+    font-size: 1.2rem;
+
+  }
+
+
+
+
+
+  /* =========================
+     CHART MOBILE
+  ========================= */
+
+
+  .charts-row {
+
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+
+  }
+
+
+
+  .chart-card canvas {
+
+    min-height: 280px;
+
+    max-height: 320px;
+
+  }
+
+
+
 }
 
-.mat-mdc-card-content {
-  padding: 8px 20px 20px !important;
+.chart-card {
+
+  canvas {
+
+    height: 300px !important;
+
+  }
+
 }
 
-.mat-mdc-card-title {
-  font-family: var(--font-body) !important;
-  font-weight: 500 !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0;
-  color: var(--muted) !important;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+
+@media(max-width:600px){
+
+
+  .chart-card canvas {
+
+    height: 350px !important;
+
+  }
+
+
 }

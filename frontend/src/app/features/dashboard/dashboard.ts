@@ -14,11 +14,120 @@ import { DashboardService, DashboardStats } from '../../core/services/dashboard'
 export class Dashboard implements OnInit {
   stats = signal<DashboardStats | null>(null);
 
-  pieChartData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
-  pieChartOptions: ChartConfiguration<'pie'>['options'] = { responsive: true };
+  pieChartData: ChartData<'pie'> = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+      },
+    ],
+  };
 
-  lineChartData: ChartData<'line'> = { labels: [], datasets: [] };
-  lineChartOptions: ChartConfiguration<'line'>['options'] = { responsive: true };
+  pieChartOptions: ChartConfiguration<'pie'>['options'] = {
+    responsive: true,
+
+    maintainAspectRatio: false,
+
+    plugins: {
+      legend: {
+        position: 'bottom',
+
+        labels: {
+          padding: 18,
+
+          font: {
+            family: 'Inter',
+
+            size: 13,
+
+            weight: 'normal',
+          },
+        },
+      },
+
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const value = context.raw as number;
+
+            return `${value.toLocaleString('fr-FR')} FCFA`;
+          },
+        },
+      },
+    },
+  };
+
+  lineChartData: ChartData<'line'> = {
+    labels: [],
+
+    datasets: [],
+  };
+
+  lineChartOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+
+    maintainAspectRatio: false,
+
+    interaction: {
+      mode: 'index',
+
+      intersect: false,
+    },
+
+    plugins: {
+      legend: {
+        position: 'top',
+
+        labels: {
+          padding: 20,
+
+          font: {
+            family: 'Inter',
+
+            size: 13,
+
+            weight: 'normal',
+          },
+        },
+      },
+
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const value = context.raw as number;
+
+            return `${context.dataset.label}: ${value.toLocaleString('fr-FR')} FCFA`;
+          },
+        },
+      },
+    },
+
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            family: 'Inter',
+
+            size: 12,
+          },
+        },
+      },
+
+      y: {
+        ticks: {
+          font: {
+            family: 'Inter',
+
+            size: 12,
+          },
+
+          callback: (value) => {
+            return `${Number(value).toLocaleString('fr-FR')} FCFA`;
+          },
+        },
+      },
+    },
+  };
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -30,7 +139,9 @@ export class Dashboard implements OnInit {
     this.dashboardService.getStats().subscribe({
       next: (data) => {
         this.stats.set(data);
+
         this.buildPieChart(data);
+
         this.buildLineChart(data);
       },
     });
@@ -39,25 +150,58 @@ export class Dashboard implements OnInit {
   private buildPieChart(data: DashboardStats): void {
     this.pieChartData = {
       labels: Object.keys(data.depensesByCategory),
-      datasets: [{ data: Object.values(data.depensesByCategory) }],
+
+      datasets: [
+        {
+          data: Object.values(data.depensesByCategory),
+        },
+      ],
     };
   }
 
   private buildLineChart(data: DashboardStats): void {
     this.lineChartData = {
-      labels: data.monthlyEvolution.map((m) => m.month),
+      labels: data.monthlyEvolution.map((m) => {
+        const [year, month] = m.month.split('-');
+
+        return new Date(Number(year), Number(month) - 1).toLocaleDateString('fr-FR', {
+          month: 'short',
+
+          year: 'numeric',
+        });
+      }),
+
       datasets: [
         {
           label: 'Revenus',
+
           data: data.monthlyEvolution.map((m) => m.revenus),
-          borderColor: '#4caf50',
-          fill: false,
+
+          borderColor: '#16a34a',
+
+          backgroundColor: 'rgba(22,163,74,0.15)',
+
+          tension: 0.4,
+
+          fill: true,
+
+          pointRadius: 4,
         },
+
         {
           label: 'Dépenses',
+
           data: data.monthlyEvolution.map((m) => m.depenses),
-          borderColor: '#f44336',
-          fill: false,
+
+          borderColor: '#dc2626',
+
+          backgroundColor: 'rgba(220,38,38,0.15)',
+
+          tension: 0.4,
+
+          fill: true,
+
+          pointRadius: 4,
         },
       ],
     };
