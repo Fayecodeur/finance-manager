@@ -3,41 +3,85 @@
 
     @if (stats()) {
     <div class="stats-cards">
+
+        <!-- Solde actuel -->
         <mat-card class="accent-card">
             <mat-card-header>
-                <mat-card-title>Solde actuel</mat-card-title>
+                <mat-card-title>
+                    Solde actuel
+                </mat-card-title>
             </mat-card-header>
+
             <mat-card-content>
-                <p class="stat-value amount">{{ stats()!.solde | number: '1.0-2' }} FCFA</p>
+                <p class="stat-value amount">
+                    {{ stats()!.solde | number:'1.0-2' }} FCFA
+                </p>
             </mat-card-content>
         </mat-card>
 
+
+
+        <!-- Revenus ce mois -->
         <mat-card class="accent-card income">
+
             <mat-card-header>
-                <mat-card-title>Total revenus</mat-card-title>
+                <mat-card-title>
+                    Revenus ce mois
+                </mat-card-title>
             </mat-card-header>
+
             <mat-card-content>
-                <p class="stat-value amount income">{{ stats()!.totalRevenus | number: '1.0-2' }} FCFA</p>
+
+                <p class="stat-value amount income">
+                    {{ stats()!.revenusThisMonth | number:'1.0-2' }} FCFA
+                </p>
+
             </mat-card-content>
+
         </mat-card>
 
+
+
+        <!-- Dépenses ce mois -->
         <mat-card class="accent-card expense">
+
             <mat-card-header>
-                <mat-card-title>Total dépenses</mat-card-title>
+                <mat-card-title>
+                    Dépenses ce mois
+                </mat-card-title>
             </mat-card-header>
+
             <mat-card-content>
-                <p class="stat-value amount expense">{{ stats()!.totalDepenses | number: '1.0-2' }} FCFA</p>
+
+                <p class="stat-value amount expense">
+                    {{ stats()!.depensesThisMonth | number:'1.0-2' }} FCFA
+                </p>
+
             </mat-card-content>
+
         </mat-card>
 
+
+
+        <!-- Transactions ce mois -->
         <mat-card class="accent-card">
+
             <mat-card-header>
-                <mat-card-title>Transactions</mat-card-title>
+                <mat-card-title>
+                    Transactions ce mois
+                </mat-card-title>
             </mat-card-header>
+
             <mat-card-content>
-                <p class="stat-value">{{ stats()!.totalTransactions }}</p>
+
+                <p class="stat-value">
+                    {{ stats()!.transactionsThisMonth }}
+                </p>
+
             </mat-card-content>
+
         </mat-card>
+
     </div>
 
     <div class="charts-row">

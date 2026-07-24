@@ -5,11 +5,15 @@ import { environment } from '../../../environments/environment';
 
 export interface DashboardStats {
   solde: number;
-  totalRevenus: number;
-  totalDepenses: number;
-  totalTransactions: number;
+  revenusThisMonth: number;
+  depensesThisMonth: number;
+  transactionsThisMonth: number;
   depensesByCategory: Record<string, number>;
-  monthlyEvolution: { month: string; revenus: number; depenses: number }[];
+  monthlyEvolution: {
+    month: string;
+    revenus: number;
+    depenses: number;
+  }[];
 }
 
 @Injectable({
