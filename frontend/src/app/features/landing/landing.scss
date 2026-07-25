@@ -14,12 +14,13 @@
   top: 0;
   left: 0;
   right: 0;
+  height: 72px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  padding: 20px 48px;
+  padding: 0 48px;
 
   background: var(--background);
   border-bottom: 1px solid var(--border);
@@ -29,7 +30,6 @@
   backdrop-filter: blur(10px);
 }
 
-
 /* Logo */
 
 .brand {
@@ -38,6 +38,12 @@
   gap: 10px;
 }
 
+
+.brand-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
 
 .brand-mark {
   width: 34px;
@@ -392,15 +398,6 @@
 
     box-shadow:0 10px 30px rgba(0,0,0,.12);
 
-  }
-
-    .hero-actions {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .btn-login {
-    order: -1;
   }
 
 
