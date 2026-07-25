@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { TransactionService } from '../../core/services/transaction';
 import { CategoryService } from '../../core/services/category';
@@ -18,9 +17,14 @@ import { Transaction } from '../../shared/models/transaction.model';
 import { Category } from '../../shared/models/category.model';
 
 import { TransactionForm, TransactionFormData } from './transaction-form/transaction-form';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { EmptyState } from '../../shared/empty-state/empty-state';
+import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-transactions',
+
   imports: [
     CommonModule,
     MatTableModule,
@@ -31,6 +35,8 @@ import { TransactionForm, TransactionFormData } from './transaction-form/transac
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    EmptyState,
+    LoadingSpinner,
   ],
   templateUrl: './transactions.html',
   styleUrl: './transactions.scss',
@@ -40,7 +46,7 @@ export class Transactions implements OnInit {
 
   dataSource = new MatTableDataSource<Transaction>([]);
   categories: Category[] = [];
-
+  isLoading = true;
   totalItems = 0;
   pageSize = 10;
   currentPage = 1;
@@ -70,6 +76,7 @@ export class Transactions implements OnInit {
   }
 
   loadTransactions(): void {
+    this.isLoading = true;
     this.transactionService
       .getTransactions({
         search: this.search,
@@ -82,6 +89,10 @@ export class Transactions implements OnInit {
         next: (res) => {
           this.dataSource.data = res.transactions;
           this.totalItems = res.total;
+          this.isLoading = false;
+        },
+        error: () => {
+          this.isLoading = false;
         },
       });
   }
@@ -145,14 +156,25 @@ export class Transactions implements OnInit {
   }
 
   deleteTransaction(id: string): void {
-    if (!confirm('Supprimer cette transaction ?')) return;
-
-    this.transactionService.deleteTransaction(id).subscribe({
-      next: () => {
-        this.loadTransactions();
-        this.notification.success('Transaction supprimée');
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '360px',
+      data: {
+        title: 'Supprimer la transaction',
+        message:
+          'Cette action est irréversible. Voulez-vous vraiment supprimer cette transaction ?',
       },
-      error: () => this.notification.error('Erreur lors de la suppression'),
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.transactionService.deleteTransaction(id).subscribe({
+        next: () => {
+          this.loadTransactions();
+          this.notification.success('Transaction supprimée');
+        },
+        error: () => this.notification.error('Erreur lors de la suppression'),
+      });
     });
   }
 

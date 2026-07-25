@@ -11,7 +11,8 @@ import { CategoryService } from '../../core/services/category';
 import { Category } from '../../shared/models/category.model';
 import { CategoryForm } from './category-form/category-form';
 import { NotificationService } from '../../core/services/notification';
-
+import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
+import { EmptyState } from '../../shared/empty-state/empty-state';
 @Component({
   selector: 'app-categories',
   imports: [
@@ -23,6 +24,7 @@ import { NotificationService } from '../../core/services/notification';
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    EmptyState,
   ],
   templateUrl: './categories.html',
   styleUrl: './categories.scss',
@@ -100,14 +102,24 @@ export class Categories implements OnInit {
   }
 
   deleteCategory(id: string): void {
-    if (!confirm('Supprimer cette catégorie ?')) return;
-
-    this.categoryService.deleteCategory(id).subscribe({
-      next: () => {
-        this.loadCategories();
-        this.notification.success('Catégorie supprimée');
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '360px',
+      data: {
+        title: 'Supprimer la catégorie',
+        message: 'Cette action est irréversible. Voulez-vous vraiment supprimer cette catégorie ?',
       },
-      error: () => this.notification.error('Erreur lors de la suppression'),
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.categoryService.deleteCategory(id).subscribe({
+        next: () => {
+          this.loadCategories();
+          this.notification.success('Catégorie supprimée');
+        },
+        error: () => this.notification.error('Erreur lors de la suppression'),
+      });
     });
   }
 }

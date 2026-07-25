@@ -1,0 +1,33 @@
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+
+  mat-icon {
+    color: var(--primary);
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.9rem;
+}

@@ -52,19 +52,15 @@
 /* =========================
    TABLEAU
 ========================= */
+.table-container {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
 
 table {
-
   width: 100%;
-
-  background: var(--card);
-
-  border: 1px solid var(--border);
-
-  border-radius: 16px 16px 0 0;
-
-  overflow: hidden;
-
 }
 
 
@@ -248,19 +244,9 @@ table {
 ========================= */
 
 .mat-mdc-paginator {
-
   background: var(--card) !important;
-
-  border: 1px solid var(--border);
-
-  border-top: none;
-
-  border-radius: 0 0 16px 16px;
-
   color: var(--text) !important;
-
 }
-
 
 
 .mat-mdc-paginator-container {

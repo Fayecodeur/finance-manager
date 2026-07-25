@@ -1,0 +1,31 @@
+.confirm-dialog {
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+
+  mat-icon {
+    color: var(--danger);
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}
+
+h2 {
+  margin: 0 0 8px;
+}
+
+mat-dialog-content p {
+  color: var(--muted);
+  margin: 0;
+}
