@@ -9,8 +9,8 @@
         <input matInput (input)="onSearchChange($any($event.target).value)" placeholder="Description..." />
     </mat-form-field>
 
-    @if (dataSource.data.length > 0) {
     <div class="table-container">
+        @if (dataSource.data.length > 0) {
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
@@ -66,10 +66,10 @@
         <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25]"
             (page)="onPageChange($event)">
         </mat-paginator>
+        } @else {
+        <app-empty-state icon="receipt_long" title="Aucune transaction"
+            message="Ajoutez votre première transaction pour commencer à suivre vos finances.">
+        </app-empty-state>
+        }
     </div>
-    } @else {
-    <app-empty-state icon="receipt_long" title="Aucune transaction"
-        message="Ajoutez votre première transaction pour commencer à suivre vos finances.">
-    </app-empty-state>
-    }
 </div>

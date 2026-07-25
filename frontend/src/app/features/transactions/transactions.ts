@@ -1,13 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { TransactionService } from '../../core/services/transaction';
 import { CategoryService } from '../../core/services/category';
@@ -51,13 +51,12 @@ export class Transactions implements OnInit {
   order: 'asc' | 'desc' = 'desc';
   search = '';
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   constructor(
     private transactionService: TransactionService,
     private categoryService: CategoryService,
     private dialog: MatDialog,
     private notification: NotificationService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -67,8 +66,14 @@ export class Transactions implements OnInit {
 
   loadCategories(): void {
     this.categoryService.getCategories().subscribe({
-      next: (categories) => (this.categories = categories),
-      error: () => (this.categories = []),
+      next: (categories) => {
+        this.categories = categories;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.categories = [];
+        this.cdr.detectChanges();
+      },
     });
   }
 
@@ -85,6 +90,7 @@ export class Transactions implements OnInit {
         next: (res) => {
           this.dataSource.data = res.transactions;
           this.totalItems = res.total;
+          this.cdr.detectChanges();
         },
       });
   }
