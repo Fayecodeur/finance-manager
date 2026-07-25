@@ -20,11 +20,9 @@ import { TransactionForm, TransactionFormData } from './transaction-form/transac
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { EmptyState } from '../../shared/empty-state/empty-state';
-import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-transactions',
-
   imports: [
     CommonModule,
     MatTableModule,
@@ -36,7 +34,6 @@ import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
     MatInputModule,
     MatDialogModule,
     EmptyState,
-    LoadingSpinner,
   ],
   templateUrl: './transactions.html',
   styleUrl: './transactions.scss',
@@ -46,7 +43,7 @@ export class Transactions implements OnInit {
 
   dataSource = new MatTableDataSource<Transaction>([]);
   categories: Category[] = [];
-  isLoading = true;
+
   totalItems = 0;
   pageSize = 10;
   currentPage = 1;
@@ -76,7 +73,6 @@ export class Transactions implements OnInit {
   }
 
   loadTransactions(): void {
-    this.isLoading = true;
     this.transactionService
       .getTransactions({
         search: this.search,
@@ -89,10 +85,6 @@ export class Transactions implements OnInit {
         next: (res) => {
           this.dataSource.data = res.transactions;
           this.totalItems = res.total;
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
         },
       });
   }

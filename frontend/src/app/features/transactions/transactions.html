@@ -9,9 +9,7 @@
         <input matInput (input)="onSearchChange($any($event.target).value)" placeholder="Description..." />
     </mat-form-field>
 
-    @if (isLoading) {
-    <app-loading-spinner message="Chargement des transactions..."></app-loading-spinner>
-    } @else if (dataSource.data.length > 0) {
+    @if (dataSource.data.length > 0) {
     <div class="table-container">
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
             <ng-container matColumnDef="date">
