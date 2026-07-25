@@ -394,6 +394,15 @@
 
   }
 
+    .hero-actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-login {
+    order: -1;
+  }
+
 
   .mobile-dropdown a {
 
