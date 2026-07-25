@@ -107,23 +107,45 @@ export class Dashboard implements OnInit {
         ticks: {
           font: {
             family: 'Inter',
-
-            size: 12,
+            size: 11,
           },
+          maxRotation: 0,
+          minRotation: 0,
+        },
+
+        grid: {
+          display: false,
         },
       },
 
       y: {
+        beginAtZero: true,
+
         ticks: {
           font: {
             family: 'Inter',
-
-            size: 12,
+            size: 11,
           },
+
+          maxTicksLimit: 4,
 
           callback: (value) => {
-            return `${Number(value).toLocaleString('fr-FR')} FCFA`;
+            const amount = Number(value);
+
+            if (amount >= 1000000) {
+              return `${(amount / 1000000).toFixed(1)} M`;
+            }
+
+            if (amount >= 1000) {
+              return `${Math.round(amount / 1000)} K`;
+            }
+
+            return amount;
           },
+        },
+
+        grid: {
+          color: 'rgba(148,163,184,.15)',
         },
       },
     },
@@ -166,8 +188,6 @@ export class Dashboard implements OnInit {
 
         return new Date(Number(year), Number(month) - 1).toLocaleDateString('fr-FR', {
           month: 'short',
-
-          year: 'numeric',
         });
       }),
 
@@ -182,10 +202,10 @@ export class Dashboard implements OnInit {
           backgroundColor: 'rgba(22,163,74,0.15)',
 
           tension: 0.4,
-
-          fill: true,
-
-          pointRadius: 4,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          borderWidth: 3,
+          fill: false,
         },
 
         {
