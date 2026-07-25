@@ -107,9 +107,10 @@ export class Dashboard implements OnInit {
         ticks: {
           font: {
             family: 'Inter',
-
-            size: 12,
+            size: 11,
           },
+          autoSkip: true,
+          maxRotation: 0,
         },
       },
 
@@ -117,12 +118,14 @@ export class Dashboard implements OnInit {
         ticks: {
           font: {
             family: 'Inter',
-
-            size: 12,
+            size: 11,
           },
-
+          maxTicksLimit: 5,
           callback: (value) => {
-            return `${Number(value).toLocaleString('fr-FR')} FCFA`;
+            const num = Number(value);
+            if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+            if (num >= 1000) return `${(num / 1000).toFixed(0)}k`;
+            return num.toString();
           },
         },
       },
@@ -166,8 +169,6 @@ export class Dashboard implements OnInit {
 
         return new Date(Number(year), Number(month) - 1).toLocaleDateString('fr-FR', {
           month: 'short',
-
-          year: 'numeric',
         });
       }),
 
