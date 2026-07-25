@@ -82,7 +82,7 @@ export class AuthDialog {
 
     this.authService.register(name, email, password).subscribe({
       next: () => {
-        this.notification.success('Compte créé avec succès, connectez-vous');
+        this.notification.success('Compte créé avec succès, connectez-vous', 5000);
         this.switchMode('login');
         this.loginForm.patchValue({ email });
         this.cdr.detectChanges();

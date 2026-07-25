@@ -7,18 +7,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class NotificationService {
   constructor(private snackBar: MatSnackBar) {}
 
-  success(message: string): void {
+  success(message: string, duration = 3000): void {
     this.snackBar.open(message, '', {
-      duration: 3000,
+      duration,
       panelClass: ['app-toast-success'],
       horizontalPosition: 'right',
       verticalPosition: 'top',
     });
   }
 
-  error(message: string): void {
+  error(message: string, duration = 4000): void {
     this.snackBar.open(message, '', {
-      duration: 4000,
+      duration,
       panelClass: ['app-toast-error'],
       horizontalPosition: 'right',
       verticalPosition: 'top',
