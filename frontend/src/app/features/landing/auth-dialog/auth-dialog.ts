@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,6 +32,7 @@ export class AuthDialog {
     private notification: NotificationService,
     private router: Router,
     private dialogRef: MatDialogRef<AuthDialog>,
+    private cdr: ChangeDetectorRef,
     @Inject(MAT_DIALOG_DATA) public data: { mode: 'login' | 'register' },
   ) {
     this.mode = data.mode;
@@ -64,7 +65,10 @@ export class AuthDialog {
         this.dialogRef.close();
         this.router.navigate(['/app/dashboard']);
       },
-      error: (err) => (this.errorMessage = err.error?.message || 'Erreur de connexion'),
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Erreur de connexion';
+        this.cdr.detectChanges();
+      },
     });
   }
 
@@ -80,13 +84,12 @@ export class AuthDialog {
       next: () => {
         this.notification.success('Compte créé avec succès, connectez-vous');
         this.switchMode('login');
-
-        this.loginForm.patchValue({
-          email,
-        });
+        this.loginForm.patchValue({ email });
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.error?.message || "Erreur lors de l'inscription";
+        this.cdr.detectChanges();
       },
     });
   }
