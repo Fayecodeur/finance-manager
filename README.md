@@ -1,4 +1,4 @@
-# Finance Manager — Application de gestion financière personnelle
+# Sama Budget — Application de gestion financière personnelle
 
 Application web full-stack permettant de suivre ses revenus, ses dépenses, son solde et d'analyser ses habitudes financières grâce à un tableau de bord.
 
@@ -146,4 +146,4 @@ Toutes les routes (sauf `/auth`) nécessitent un token JWT dans le header `Autho
 
 ## Auteur
 
-Demba Faye — Projet réalisé dans le cadre du cours Web Services, Master 1.
+Demba Faye
