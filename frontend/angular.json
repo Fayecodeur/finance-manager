@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "personal-finance-dashboard": {
+    "sama-budget": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -66,10 +66,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "personal-finance-dashboard:build:production"
+              "buildTarget": "sama-budget:build:production"
             },
             "development": {
-              "buildTarget": "personal-finance-dashboard:build:development"
+              "buildTarget": "sama-budget:build:development"
             }
           },
           "defaultConfiguration": "development"
