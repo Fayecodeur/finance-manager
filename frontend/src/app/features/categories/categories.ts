@@ -13,6 +13,7 @@ import { CategoryForm } from './category-form/category-form';
 import { NotificationService } from '../../core/services/notification';
 import { ConfirmDialog } from '../../shared/confirm-dialog/confirm-dialog';
 import { EmptyState } from '../../shared/empty-state/empty-state';
+import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 @Component({
   selector: 'app-categories',
   imports: [
@@ -25,6 +26,7 @@ import { EmptyState } from '../../shared/empty-state/empty-state';
     MatInputModule,
     MatDialogModule,
     EmptyState,
+    LoadingSpinner,
   ],
   templateUrl: './categories.html',
   styleUrl: './categories.scss',
@@ -35,7 +37,7 @@ export class Categories implements OnInit {
   search = signal('');
   pageIndex = signal(0);
   pageSize = signal(5);
-
+  isLoading = signal(true);
   filtered = computed(() => {
     const term = this.search().toLowerCase();
     return this.allCategories().filter((c) => c.name.toLowerCase().includes(term));
@@ -57,8 +59,15 @@ export class Categories implements OnInit {
   }
 
   loadCategories(): void {
+    this.isLoading.set(true);
     this.categoryService.getCategories().subscribe({
-      next: (categories) => this.allCategories.set(categories),
+      next: (categories) => {
+        this.allCategories.set(categories);
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
     });
   }
 

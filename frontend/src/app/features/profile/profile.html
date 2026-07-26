@@ -9,6 +9,9 @@
         </div>
     </div>
 
+    @if (isLoading()) {
+    <app-loading-spinner message="Chargement du profil..."></app-loading-spinner>
+    } @else {
 
     <div class="profile-container">
 
@@ -220,5 +223,6 @@
 
     </div>
 
+    }
 
 </div>

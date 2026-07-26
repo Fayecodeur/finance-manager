@@ -10,7 +10,9 @@
     </mat-form-field>
 
     <div class="table-container">
-        @if (dataSource.data.length > 0) {
+        @if (isLoading()) {
+        <app-loading-spinner message="Chargement des transactions..."></app-loading-spinner>
+        } @else if (dataSource.data.length > 0) {
         <table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)">
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>

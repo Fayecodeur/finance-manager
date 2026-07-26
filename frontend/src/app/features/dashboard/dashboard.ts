@@ -4,10 +4,10 @@ import { MatCardModule } from '@angular/material/card';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { DashboardService, DashboardStats } from '../../core/services/dashboard';
-
+import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatCardModule, BaseChartDirective],
+  imports: [CommonModule, MatCardModule, BaseChartDirective, LoadingSpinner],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

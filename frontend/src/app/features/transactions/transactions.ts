@@ -7,8 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
+import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 import { TransactionService } from '../../core/services/transaction';
 import { CategoryService } from '../../core/services/category';
 import { NotificationService } from '../../core/services/notification';
@@ -34,6 +34,7 @@ import { EmptyState } from '../../shared/empty-state/empty-state';
     MatInputModule,
     MatDialogModule,
     EmptyState,
+    LoadingSpinner,
   ],
   templateUrl: './transactions.html',
   styleUrl: './transactions.scss',
@@ -50,6 +51,7 @@ export class Transactions implements OnInit {
   sortBy = 'date';
   order: 'asc' | 'desc' = 'desc';
   search = '';
+  isLoading = signal(true);
 
   constructor(
     private transactionService: TransactionService,
@@ -78,6 +80,7 @@ export class Transactions implements OnInit {
   }
 
   loadTransactions(): void {
+    this.isLoading.set(true);
     this.transactionService
       .getTransactions({
         search: this.search,
@@ -90,7 +93,10 @@ export class Transactions implements OnInit {
         next: (res) => {
           this.dataSource.data = res.transactions;
           this.totalItems = res.total;
-          this.cdr.detectChanges();
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
         },
       });
   }

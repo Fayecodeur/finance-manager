@@ -35,6 +35,13 @@ mat-form-field {
   font-weight: 600;
 }
 
+.hint-text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+
 
 @media (max-width: 600px) {
 

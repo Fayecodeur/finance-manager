@@ -18,10 +18,10 @@
     </mat-form-field>
 
 
-
     <div class="table-container">
-
-        @if (paged().length > 0) {
+        @if (isLoading()) {
+        <app-loading-spinner message="Chargement des catégories..."></app-loading-spinner>
+        } @else if (paged().length > 0) {
         <table mat-table [dataSource]="paged()">
 
 

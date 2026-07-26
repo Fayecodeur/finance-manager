@@ -18,7 +18,17 @@
             }
         </mat-form-field>
         @if (errorMessage) { <p class="error-message">{{ errorMessage }}</p> }
-        <button mat-raised-button color="primary" type="submit" class="full-width">Se connecter</button>
+        <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+            <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+            Connexion...
+            } @else {
+            Se connecter
+            }
+        </button>
+        @if (isSubmitting()) {
+        <p class="hint-text">Cela peut prendre un moment...</p>
+        }
         <p class="switch-text">Pas de compte ? <a (click)="switchMode('register')">S'inscrire</a></p>
     </form>
     } @else {
@@ -45,7 +55,17 @@
             }
         </mat-form-field>
         @if (errorMessage) { <p class="error-message">{{ errorMessage }}</p> }
-        <button mat-raised-button color="primary" type="submit" class="full-width">S'inscrire</button>
+        <button mat-raised-button color="primary" type="submit" class="full-width" [disabled]="isSubmitting()">
+            @if (isSubmitting()) {
+            <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+            Inscription...
+            } @else {
+            S'inscrire
+            }
+        </button>
+        @if (isSubmitting()) {
+        <p class="hint-text">Cela peut prendre un moment...</p>
+        }
         <p class="switch-text">Déjà un compte ? <a (click)="switchMode('login')">Se connecter</a></p>
     </form>
     }

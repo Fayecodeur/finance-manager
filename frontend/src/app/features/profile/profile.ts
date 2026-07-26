@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../core/services/user';
 import { NotificationService } from '../../core/services/notification';
 import { MatDividerModule } from '@angular/material/divider';
+import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +20,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    LoadingSpinner,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -28,6 +30,7 @@ export class Profile implements OnInit {
   passwordForm: FormGroup;
   hideCurrentPassword = true;
   hideNewPassword = true;
+  isLoading = signal(true);
 
   constructor(
     private fb: FormBuilder,
@@ -49,6 +52,10 @@ export class Profile implements OnInit {
     this.userService.getProfile().subscribe({
       next: (user) => {
         this.infoForm.patchValue({ name: user.name, email: user.email });
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.isLoading.set(false);
       },
     });
   }

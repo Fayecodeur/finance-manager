@@ -1,4 +1,4 @@
-import { Component, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { Auth } from '../../../core/services/auth';
 import { NotificationService } from '../../../core/services/notification';
-
+import { MatProgressSpinnerModule, MatProgressSpinner } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-auth-dialog',
   imports: [
@@ -16,6 +16,7 @@ import { NotificationService } from '../../../core/services/notification';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinner,
   ],
   templateUrl: './auth-dialog.html',
   styleUrl: './auth-dialog.scss',
@@ -25,7 +26,7 @@ export class AuthDialog {
   loginForm: FormGroup;
   registerForm: FormGroup;
   errorMessage = '';
-
+  isSubmitting = signal(false);
   constructor(
     private fb: FormBuilder,
     private authService: Auth,
@@ -59,6 +60,7 @@ export class AuthDialog {
       this.loginForm.markAllAsTouched();
       return;
     }
+    this.isSubmitting.set(true);
     const { email, password } = this.loginForm.value;
     this.authService.login(email, password).subscribe({
       next: () => {
@@ -67,6 +69,7 @@ export class AuthDialog {
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Erreur de connexion';
+        this.isSubmitting.set(false);
         this.cdr.detectChanges();
       },
     });
@@ -78,6 +81,7 @@ export class AuthDialog {
       return;
     }
 
+    this.isSubmitting.set(true);
     const { name, email, password } = this.registerForm.value;
 
     this.authService.register(name, email, password).subscribe({
@@ -85,10 +89,12 @@ export class AuthDialog {
         this.notification.success('Compte créé avec succès, connectez-vous', 5000);
         this.switchMode('login');
         this.loginForm.patchValue({ email });
+        this.isSubmitting.set(false);
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.errorMessage = err.error?.message || "Erreur lors de l'inscription";
+        this.isSubmitting.set(false);
         this.cdr.detectChanges();
       },
     });
