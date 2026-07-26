@@ -297,17 +297,22 @@
 
 
 .landing-footer {
+  text-align: center;
+  padding: 24px;
+  color: var(--muted);
+  font-size: .85rem;
 
-  text-align:center;
+  a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s ease;
+  }
 
-  padding:24px;
-
-  color:var(--muted);
-
-  font-size:.85rem;
-
+  a:hover {
+    text-decoration: underline;
+  }
 }
-
 
 
 /* =========================

@@ -115,21 +115,22 @@
 
 
     <p>
-        FinTrack vous aide à suivre vos revenus et dépenses,
-        comprendre vos habitudes financières et garder le contrôle
-        sur votre budget, jour après jour.
+        SamaBudget vous aide à suivre vos revenus et vos dépenses, analyser vos habitudes financières et garder le
+        contrôle sur votre budget au quotidien.
     </p>
 
 
     <div class="hero-actions">
 
+        <button mat-stroked-button class="hero-btn btn-login" (click)="openAuth('login')">
+            Se connecter
+        </button>
+
         <button mat-raised-button color="primary" class="hero-btn btn-register" (click)="openAuth('register')">
             Commencer gratuitement
         </button>
 
-        <button mat-stroked-button class="hero-btn btn-login" (click)="openAuth('login')">
-            Se connecter
-        </button>
+
 
     </div>
 
@@ -182,7 +183,7 @@
 
 
         <p>
-            Ajoutez, recherchez et triez vos transactions facilement.
+            Ajoutez, organisez et retrouvez facilement toutes vos opérations financières.
         </p>
 
 
@@ -212,7 +213,7 @@
 
 
         <p>
-            Comprenez vos habitudes grâce à des graphiques clairs.
+            Analysez vos habitudes grâce à des graphiques simples et compréhensibles.
         </p>
 
 
@@ -226,9 +227,10 @@
 
 
 <footer class="landing-footer">
-
     <p>
-        © 2026 FinTrack. Projet universitaire.
+        © 2026 SamaBudget —réalisé par
+        <a href="https://www.dembafaye.com" target="_blank" rel="noopener noreferrer">
+            Demba Faye
+        </a>
     </p>
-
 </footer>
