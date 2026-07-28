@@ -88,6 +88,20 @@ export const updateTransaction = async (req: AuthRequest, res: Response) => {
   }
 };
 
+export const resetAllTransactions = async (req: AuthRequest, res: Response) => {
+  try {
+    const filter: Record<string, any> = { user: req.userId as string };
+    const result = await Transaction.deleteMany(filter);
+
+    res.status(200).json({
+      message: "Toutes les transactions ont été supprimées",
+      count: result.deletedCount,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error });
+  }
+};
+
 export const deleteTransaction = async (req: AuthRequest, res: Response) => {
   try {
     const filter: Record<string, any> = {
