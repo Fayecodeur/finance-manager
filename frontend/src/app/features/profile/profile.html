@@ -220,6 +220,41 @@
         </mat-card>
 
 
+        <mat-card class="profile-card danger-zone">
+
+            <div class="card-heading">
+
+                <div class="icon-badge danger-icon">
+                    <mat-icon>warning</mat-icon>
+                </div>
+
+                <div>
+                    <h3>Zone dangereuse</h3>
+                    <p class="subtitle">
+                        Actions irréversibles, à utiliser avec précaution
+                    </p>
+                </div>
+
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div class="form-body">
+                <p class="danger-text">
+                    Supprimer toutes vos transactions videra définitivement votre historique. Vos catégories et votre
+                    compte resteront intacts.
+                </p>
+
+                <div class="form-actions">
+                    <button mat-stroked-button color="warn" type="button" (click)="onResetTransactions()">
+                        <mat-icon>delete_forever</mat-icon>
+                        Réinitialiser mes transactions
+                    </button>
+                </div>
+            </div>
+
+        </mat-card>
+
 
     </div>
 

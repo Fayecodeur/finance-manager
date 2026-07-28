@@ -42,4 +42,8 @@ export class TransactionService {
   deleteTransaction(id: string): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
   }
+
+  resetAllTransactions(): Observable<{ message: string; count: number }> {
+    return this.http.delete<{ message: string; count: number }>(`${this.apiUrl}/reset-all`);
+  }
 }

@@ -5,10 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserService } from '../../core/services/user';
+import { TransactionService } from '../../core/services/transaction';
 import { NotificationService } from '../../core/services/notification';
 import { MatDividerModule } from '@angular/material/divider';
 import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
+import { DangerConfirmDialog } from '../../shared/danger-confirm-dialog/danger-confirm-dialog';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +23,7 @@ import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatDialogModule,
     LoadingSpinner,
   ],
   templateUrl: './profile.html',
@@ -35,7 +39,9 @@ export class Profile implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private transactionService: TransactionService,
     private notification: NotificationService,
+    private dialog: MatDialog,
   ) {
     this.infoForm = this.fb.group({
       name: ['', Validators.required],
@@ -88,6 +94,29 @@ export class Profile implements OnInit {
       },
       error: (err) =>
         this.notification.error(err.error?.message || 'Erreur lors du changement de mot de passe'),
+    });
+  }
+
+  onResetTransactions(): void {
+    const dialogRef = this.dialog.open(DangerConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Supprimer toutes les transactions',
+        message:
+          'Cette action supprimera définitivement toutes vos transactions. Cette action est irréversible et ne peut pas être annulée.',
+        confirmWord: 'SUPPRIMER',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return;
+
+      this.transactionService.resetAllTransactions().subscribe({
+        next: (res) => {
+          this.notification.success(`${res.count} transaction(s) supprimée(s)`);
+        },
+        error: () => this.notification.error('Erreur lors de la suppression'),
+      });
     });
   }
 }

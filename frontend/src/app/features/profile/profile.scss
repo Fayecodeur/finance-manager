@@ -313,3 +313,24 @@ mat-form-field {
 
 
 }
+
+.danger-zone {
+  border-color: rgba(220, 38, 38, 0.3) !important;
+}
+
+.danger-icon {
+  background: rgba(220, 38, 38, 0.1) !important;
+
+  mat-icon {
+    color: var(--danger) !important;
+  }
+}
+
+.danger-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+.danger-zone button {
+  font-family: var(--font-body) !important;
+}
