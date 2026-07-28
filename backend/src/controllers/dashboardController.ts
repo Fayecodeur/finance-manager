@@ -2,6 +2,16 @@ import { Response } from "express";
 import Transaction from "../models/Transaction";
 import { AuthRequest } from "../middlewares/authMiddleware";
 
+const calculatePercentChange = (
+  current: number,
+  previous: number,
+): number | null => {
+  if (previous === 0) {
+    return current === 0 ? 0 : null;
+  }
+  return Math.round(((current - previous) / previous) * 1000) / 10;
+};
+
 export const getDashboardStats = async (req: AuthRequest, res: Response) => {
   try {
     const filter = {
@@ -12,8 +22,11 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
 
     let revenusThisMonth = 0;
     let depensesThisMonth = 0;
+    let revenusLastMonth = 0;
+    let depensesLastMonth = 0;
     let solde = 0;
     let transactionsThisMonth = 0;
+    let transactionsLastMonth = 0;
 
     const byCategory: Record<string, number> = {};
 
@@ -24,6 +37,10 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
     const currentMonth = now.getMonth();
 
     const currentYear = now.getFullYear();
+
+    const lastMonthDate = new Date(currentYear, currentMonth - 1, 1);
+    const lastMonth = lastMonthDate.getMonth();
+    const lastMonthYear = lastMonthDate.getFullYear();
 
     for (const t of transactions) {
       const amount = t.amount;
@@ -41,6 +58,10 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
         transactionDate.getMonth() === currentMonth &&
         transactionDate.getFullYear() === currentYear;
 
+      const isLastMonth =
+        transactionDate.getMonth() === lastMonth &&
+        transactionDate.getFullYear() === lastMonthYear;
+
       // Statistiques du mois actuel
       if (isCurrentMonth) {
         transactionsThisMonth++;
@@ -49,6 +70,17 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
           revenusThisMonth += amount;
         } else {
           depensesThisMonth += amount;
+        }
+      }
+
+      // Statistiques du mois précédent (pour comparaison)
+      if (isLastMonth) {
+        transactionsLastMonth++;
+
+        if (t.type === "revenu") {
+          revenusLastMonth += amount;
+        } else {
+          depensesLastMonth += amount;
         }
       }
 
@@ -98,6 +130,18 @@ export const getDashboardStats = async (req: AuthRequest, res: Response) => {
       depensesByCategory: byCategory,
 
       monthlyEvolution,
+
+      revenusChangePercent: calculatePercentChange(
+        revenusThisMonth,
+        revenusLastMonth,
+      ),
+
+      depensesChangePercent: calculatePercentChange(
+        depensesThisMonth,
+        depensesLastMonth,
+      ),
+
+      transactionsDiff: transactionsThisMonth - transactionsLastMonth,
     });
   } catch (error) {
     res.status(500).json({

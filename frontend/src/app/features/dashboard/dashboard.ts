@@ -5,15 +5,24 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { DashboardService, DashboardStats } from '../../core/services/dashboard';
 import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
+import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatCardModule, BaseChartDirective, LoadingSpinner],
+  imports: [CommonModule, MatCardModule, BaseChartDirective, LoadingSpinner, MatIcon],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard implements OnInit {
   stats = signal<DashboardStats | null>(null);
-
+  getChangeDirection(percent: number | null): 'up' | 'down' | 'neutral' {
+    if (percent === null || percent === 0) return 'neutral';
+    return percent > 0 ? 'up' : 'down';
+  }
+  getTransactionsDiffText(diff: number): string {
+    if (diff === 0) return 'Autant que le mois dernier';
+    if (diff > 0) return `${diff} de plus que le mois dernier`;
+    return `${Math.abs(diff)} de moins que le mois dernier`;
+  }
   pieChartData: ChartData<'pie'> = {
     labels: [],
     datasets: [

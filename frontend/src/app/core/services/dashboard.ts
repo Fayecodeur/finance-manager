@@ -14,6 +14,9 @@ export interface DashboardStats {
     revenus: number;
     depenses: number;
   }[];
+  revenusChangePercent: number | null;
+  depensesChangePercent: number | null;
+  transactionsDiff: number;
 }
 
 @Injectable({

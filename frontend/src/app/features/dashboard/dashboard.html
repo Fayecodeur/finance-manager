@@ -20,7 +20,6 @@
         </mat-card>
 
 
-
         <!-- Revenus ce mois -->
         <mat-card class="accent-card income">
 
@@ -32,9 +31,25 @@
 
             <mat-card-content>
 
-                <p class="stat-value amount income">
-                    {{ stats()!.revenusThisMonth | number:'1.0-2' }} FCFA
-                </p>
+                <div class="stat-row">
+                    <p class="stat-value amount income">
+                        {{ stats()!.revenusThisMonth | number:'1.0-2' }} FCFA
+                    </p>
+
+                    @if (stats()!.revenusChangePercent !== null) {
+                    <span class="change-badge" [class.up]="getChangeDirection(stats()!.revenusChangePercent) === 'up'"
+                        [class.down]="getChangeDirection(stats()!.revenusChangePercent) === 'down'">
+                        @if (getChangeDirection(stats()!.revenusChangePercent) === 'up') {
+                        <mat-icon>trending_up</mat-icon>
+                        } @else if (getChangeDirection(stats()!.revenusChangePercent) === 'down') {
+                        <mat-icon>trending_down</mat-icon>
+                        } @else {
+                        <mat-icon>trending_flat</mat-icon>
+                        }
+                        {{ stats()!.revenusChangePercent }}%
+                    </span>
+                    }
+                </div>
 
             </mat-card-content>
 
@@ -53,14 +68,30 @@
 
             <mat-card-content>
 
-                <p class="stat-value amount expense">
-                    {{ stats()!.depensesThisMonth | number:'1.0-2' }} FCFA
-                </p>
+                <div class="stat-row">
+                    <p class="stat-value amount expense">
+                        {{ stats()!.depensesThisMonth | number:'1.0-2' }} FCFA
+                    </p>
+
+                    @if (stats()!.depensesChangePercent !== null) {
+                    <span class="change-badge"
+                        [class.up]="getChangeDirection(stats()!.depensesChangePercent) === 'down'"
+                        [class.down]="getChangeDirection(stats()!.depensesChangePercent) === 'up'">
+                        @if (getChangeDirection(stats()!.depensesChangePercent) === 'up') {
+                        <mat-icon>trending_up</mat-icon>
+                        } @else if (getChangeDirection(stats()!.depensesChangePercent) === 'down') {
+                        <mat-icon>trending_down</mat-icon>
+                        } @else {
+                        <mat-icon>trending_flat</mat-icon>
+                        }
+                        {{ stats()!.depensesChangePercent }}%
+                    </span>
+                    }
+                </div>
 
             </mat-card-content>
 
         </mat-card>
-
 
 
         <!-- Transactions ce mois -->
@@ -76,6 +107,10 @@
 
                 <p class="stat-value">
                     {{ stats()!.transactionsThisMonth }}
+                </p>
+
+                <p class="stat-subtext">
+                    {{ getTransactionsDiffText(stats()!.transactionsDiff) }}
                 </p>
 
             </mat-card-content>
