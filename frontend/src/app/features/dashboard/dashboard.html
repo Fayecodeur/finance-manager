@@ -36,7 +36,8 @@
                         {{ stats()!.revenusThisMonth | number:'1.0-2' }} FCFA
                     </p>
 
-                    @if (stats()!.revenusChangePercent !== null) {
+                    @if (stats()!.revenusChangePercent !== null && (stats()!.revenusThisMonth > 0 ||
+                    stats()!.revenusChangePercent !== 0)) {
                     <span class="change-badge" [class.up]="getChangeDirection(stats()!.revenusChangePercent) === 'up'"
                         [class.down]="getChangeDirection(stats()!.revenusChangePercent) === 'down'">
                         @if (getChangeDirection(stats()!.revenusChangePercent) === 'up') {
@@ -73,7 +74,8 @@
                         {{ stats()!.depensesThisMonth | number:'1.0-2' }} FCFA
                     </p>
 
-                    @if (stats()!.depensesChangePercent !== null) {
+                    @if (stats()!.depensesChangePercent !== null && (stats()!.depensesThisMonth > 0 ||
+                    stats()!.depensesChangePercent !== 0)) {
                     <span class="change-badge"
                         [class.up]="getChangeDirection(stats()!.depensesChangePercent) === 'down'"
                         [class.down]="getChangeDirection(stats()!.depensesChangePercent) === 'up'">
@@ -110,7 +112,7 @@
                 </p>
 
                 <p class="stat-subtext">
-                    {{ getTransactionsDiffText(stats()!.transactionsDiff) }}
+                    {{ getTransactionsSubtext(stats()!.transactionsDiff, stats()!.transactionsThisMonth) }}
                 </p>
 
             </mat-card-content>
@@ -125,7 +127,12 @@
                 <mat-card-title>Répartition des dépenses</mat-card-title>
             </mat-card-header>
             <mat-card-content>
+                @if (stats()!.depensesThisMonth > 0 || pieChartData.labels!.length > 0) {
                 <canvas baseChart [data]="pieChartData" [options]="pieChartOptions" type="pie"></canvas>
+                } @else {
+                <app-empty-state icon="pie_chart" title="Aucune dépense"
+                    message="Ajoutez des transactions pour voir la répartition."></app-empty-state>
+                }
             </mat-card-content>
         </mat-card>
 
@@ -134,7 +141,12 @@
                 <mat-card-title>Évolution mensuelle</mat-card-title>
             </mat-card-header>
             <mat-card-content>
+                @if (lineChartData.labels!.length > 0) {
                 <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" type="line"></canvas>
+                } @else {
+                <app-empty-state icon="show_chart" title="Aucune donnée"
+                    message="L'évolution apparaîtra dès que vous aurez des transactions."></app-empty-state>
+                }
             </mat-card-content>
         </mat-card>
     </div>

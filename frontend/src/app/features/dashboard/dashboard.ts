@@ -6,9 +6,10 @@ import { ChartConfiguration, ChartData } from 'chart.js';
 import { DashboardService, DashboardStats } from '../../core/services/dashboard';
 import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 import { MatIcon } from '@angular/material/icon';
+import { EmptyState } from '../../shared/empty-state/empty-state';
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatCardModule, BaseChartDirective, LoadingSpinner, MatIcon],
+  imports: [CommonModule, MatCardModule, BaseChartDirective, LoadingSpinner, MatIcon, EmptyState],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -18,7 +19,8 @@ export class Dashboard implements OnInit {
     if (percent === null || percent === 0) return 'neutral';
     return percent > 0 ? 'up' : 'down';
   }
-  getTransactionsDiffText(diff: number): string {
+  getTransactionsSubtext(diff: number, current: number): string {
+    if (current === 0 && diff === 0) return "Aucune transaction pour l'instant";
     if (diff === 0) return 'Autant que le mois dernier';
     if (diff > 0) return `${diff} de plus que le mois dernier`;
     return `${Math.abs(diff)} de moins que le mois dernier`;
