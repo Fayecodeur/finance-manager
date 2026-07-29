@@ -3,11 +3,33 @@
         <h2>Transactions</h2>
         <button mat-raised-button color="primary" (click)="openForm()">Ajouter</button>
     </div>
+    <div class="filters-row">
+        <mat-form-field appearance="outline" class="search-field">
+            <mat-label>Rechercher</mat-label>
+            <input matInput (input)="onSearchChange($any($event.target).value)" placeholder="Description..." />
+        </mat-form-field>
 
-    <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Rechercher</mat-label>
-        <input matInput (input)="onSearchChange($any($event.target).value)" placeholder="Description..." />
-    </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}"
+                (selectionChange)="onTypeChange($event.value)">
+                <mat-option value="">Tous</mat-option>
+                <mat-option value="revenu">Revenu</mat-option>
+                <mat-option value="depense">Dépense</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Catégorie</mat-label>
+            <mat-select [(ngModel)]="selectedCategory" [ngModelOptions]="{standalone: true}"
+                (selectionChange)="onCategoryChange($event.value)">
+                <mat-option value="">Toutes</mat-option>
+                @for (cat of categories; track cat._id) {
+                <mat-option [value]="cat._id">{{ cat.name }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
 
     <div class="table-container">
         @if (isLoading()) {

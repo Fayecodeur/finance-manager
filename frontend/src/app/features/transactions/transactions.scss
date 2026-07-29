@@ -346,3 +346,32 @@ table {
 
 
 }
+
+.filters-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.search-field {
+  flex: 2 1 300px;
+  margin-bottom: 0;
+}
+
+.filter-field {
+  flex: 1 1 200px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .filters-row {
+    flex-direction: column;
+  }
+
+  .search-field,
+  .filter-field {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}

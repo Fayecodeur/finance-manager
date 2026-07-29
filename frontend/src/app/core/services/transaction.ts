@@ -6,6 +6,8 @@ import { Transaction, TransactionListResponse } from '../../shared/models/transa
 
 export interface TransactionQuery {
   search?: string;
+  type?: string;
+  category?: string;
   sortBy?: string;
   order?: 'asc' | 'desc';
   page?: number;

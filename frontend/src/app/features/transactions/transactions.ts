@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { LoadingSpinner } from '../../shared/loading-spinner/loading-spinner';
 import { TransactionService } from '../../core/services/transaction';
@@ -25,6 +27,7 @@ import { EmptyState } from '../../shared/empty-state/empty-state';
   selector: 'app-transactions',
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -32,6 +35,7 @@ import { EmptyState } from '../../shared/empty-state/empty-state';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatDialogModule,
     EmptyState,
     LoadingSpinner,
@@ -51,6 +55,8 @@ export class Transactions implements OnInit {
   sortBy = 'date';
   order: 'asc' | 'desc' = 'desc';
   search = '';
+  selectedType = '';
+  selectedCategory = '';
   isLoading = signal(true);
 
   constructor(
@@ -84,6 +90,8 @@ export class Transactions implements OnInit {
     this.transactionService
       .getTransactions({
         search: this.search,
+        type: this.selectedType,
+        category: this.selectedCategory,
         sortBy: this.sortBy,
         order: this.order,
         page: this.currentPage,
@@ -103,6 +111,18 @@ export class Transactions implements OnInit {
 
   onSearchChange(value: string): void {
     this.search = value;
+    this.currentPage = 1;
+    this.loadTransactions();
+  }
+
+  onTypeChange(value: string): void {
+    this.selectedType = value;
+    this.currentPage = 1;
+    this.loadTransactions();
+  }
+
+  onCategoryChange(value: string): void {
+    this.selectedCategory = value;
     this.currentPage = 1;
     this.loadTransactions();
   }
