@@ -102,9 +102,11 @@ export class Transactions implements OnInit {
           this.dataSource.data = res.transactions;
           this.totalItems = res.total;
           this.isLoading.set(false);
+          this.cdr.detectChanges();
         },
         error: () => {
           this.isLoading.set(false);
+          this.cdr.detectChanges();
         },
       });
   }

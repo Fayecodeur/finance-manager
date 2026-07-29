@@ -1,0 +1,80 @@
+<div class="reports-container">
+    <h2>Rapports</h2>
+
+    @if (isLoading) {
+    <app-loading-spinner message="Chargement des rapports..."></app-loading-spinner>
+    } @else {
+
+    <div class="filters-row">
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Période</mat-label>
+            <mat-select [(ngModel)]="selectedMonth" [ngModelOptions]="{standalone: true}"
+                (selectionChange)="onMonthChange()">
+                <mat-option value="">Toutes les périodes</mat-option>
+                @for (m of availableMonths; track m.value) {
+                <mat-option [value]="m.value">{{ m.label }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}"
+                (selectionChange)="onTypeChange()">
+                <mat-option value="">Tous</mat-option>
+                <mat-option value="revenu">Revenus</mat-option>
+                <mat-option value="depense">Dépenses</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="exportMenu">
+            <mat-icon>download</mat-icon>
+            Exporter
+        </button>
+
+        <mat-menu #exportMenu="matMenu">
+            <button mat-menu-item (click)="exportPdf()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>PDF</span>
+            </button>
+            <button mat-menu-item (click)="exportExcel()">
+                <mat-icon>table_chart</mat-icon>
+                <span>Excel</span>
+            </button>
+            <button mat-menu-item (click)="exportCsv()">
+                <mat-icon>description</mat-icon>
+                <span>CSV</span>
+            </button>
+        </mat-menu>
+    </div>
+
+    <div class="summary-cards">
+        <mat-card class="accent-card income">
+            <mat-card-header>
+                <mat-card-title>Revenus</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="stat-value amount income">{{ totalRevenus | number:'1.0-2' }} FCFA</p>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="accent-card expense">
+            <mat-card-header>
+                <mat-card-title>Dépenses</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="stat-value amount expense">{{ totalDepenses | number:'1.0-2' }} FCFA</p>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="accent-card">
+            <mat-card-header>
+                <mat-card-title>Transactions</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p class="stat-value">{{ totalTransactions }}</p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    }
+</div>
