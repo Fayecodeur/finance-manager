@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class ThemeService {
-  private storageKey = 'fintrack-theme';
+  private storageKey = 'theme';
   isDark = signal<boolean>(localStorage.getItem(this.storageKey) === 'dark');
 
   constructor() {
